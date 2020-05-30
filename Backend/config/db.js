@@ -1,23 +1,19 @@
 const mongoose = require('mongoose');
 
-const config = require('config');
+mongoose.Promise = global.Promise;
 
-const db = config.get('mongoURI');
-
-const connectDB = async () => {
-    try{
-        await mongoose.connect(
-            db, 
-            {
-                useNewUrlParser: true 
-            }
-        );
-
-        console.log('MongoDB is connected .. ');
-    }catch(err){
-        console.error(err.message);
-        process.exit(1);
+mongoose.connect('mongodb://mernbook:mernbook@book-shard-00-00-atket.mongodb.net:27017,book-shard-00-01-atket.mongodb.net:27017,book-shard-00-02-atket.mongodb.net:27017/test?ssl=true&replicaSet=book-shard-0&authSource=admin&retryWrites=true&w=majority', {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}, (err)=>{
+    if(err){
+        console.log(err)
     }
-};
+});
 
-module.exports = connectDB;
+const connection = mongoose.connection;
+connection.once('open', ()=> {
+    console.log("MongoDb database connected successfully");
+})
+
+
+
+
+module.exports = connection;
