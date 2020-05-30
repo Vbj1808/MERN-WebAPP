@@ -11,3 +11,10 @@ router.get('/', (req,res)=>{
         .then(books => res.json(books))
         .catch(err => res.status(400).json({ nobooksfound : 'No Books Found'}));
 });
+
+router.get('/:id', (req,res)=> {
+    Book.findById(req.params.id)
+        .then(book => res.json(book))
+        .catch(err => res.status(404).json({ nobookfound: 'No book found'}));
+});
+
